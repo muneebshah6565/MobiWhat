@@ -1,5 +1,6 @@
 package com.example.mobiwhat.ui.modelsAdapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mobiwhat.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -22,13 +24,15 @@ public class MobileAdapter extends RecyclerView.Adapter<MobileAdapter.MobileHold
     public MobileAdapter(ArrayList<MobileModel> dataSet) {
         this.dataSet = dataSet;
     }
-
+    private View view;
+    private Context con;
     @NonNull
     @Override
     public MobileHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        con = parent.getContext();
+        view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.single_mobile_item, parent, false);
-        MobileHolder holder=new MobileHolder(view);
+        MobileHolder holder = new MobileHolder(view);
         return holder;
     }
 
@@ -38,21 +42,19 @@ public class MobileAdapter extends RecyclerView.Adapter<MobileAdapter.MobileHold
         TextView mobileDesc = holder.mobDesc;
         TextView mobilePrice = holder.mobPrice;
 
-        ImageView mobileImage=holder.mobImage;
+        ImageView mobileImage = holder.mobImage;
 
         mobileName.setText(dataSet.get(position).getName());
         mobileDesc.setText(dataSet.get(position).getDesc());
         mobilePrice.setText(String.valueOf(dataSet.get(position).getPrice()));
 
-        mobileImage.setImageResource(dataSet.get(position).getImage());
+        Glide.with(con).load("https://mobiwhat.000webhostapp.com/storage" + dataSet.get(position).getImage()).into(mobileImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.nav_mobile_detail);
             }
         });
-
     }
 
     @Override

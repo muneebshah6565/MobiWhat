@@ -1,23 +1,33 @@
 package com.example.mobiwhat.ui.modelsAdapters;
 
+import android.net.Uri;
+
+import java.net.URI;
+
 public class MobileModel {
-    int image;
+    String image;
     String name;
     String desc;
     int price;
+    int id;
 
-    public MobileModel(int image, String name, String desc, int price) {
+    public MobileModel(String image, String name, String desc, int price) {
         this.image = image;
         this.name = name;
         this.desc = desc;
         this.price = price;
     }
+    public int getId(){return id;}
 
-    public int getImage() {
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
