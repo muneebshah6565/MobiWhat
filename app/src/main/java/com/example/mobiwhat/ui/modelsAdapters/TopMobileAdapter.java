@@ -53,6 +53,7 @@ public class TopMobileAdapter extends RecyclerView.Adapter<TopMobileAdapter.TopM
             @Override
             public void onClick(View v) {
                 Bundle args=new Bundle();
+                args.putInt("id", dataSet.get(position).getId());
                 args.putString("name",dataSet.get(position).getName());
                 args.putString("desc",dataSet.get(position).getDesc());
                 args.putString("price", String.valueOf(dataSet.get(position).getPrice()));

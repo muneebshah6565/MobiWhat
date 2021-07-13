@@ -109,6 +109,7 @@ public class HomeFragment extends Fragment {
                         JSONObject mobile;
                         for (int i = 0; i < d.length(); i++) {
                             mobile = new JSONObject(d.get(i).toString());
+                            Log.d("DATAD", String.valueOf(mobile.getInt("id")));
                             data.add(new MobileModel(
                                     mobile.getInt("id"),
                                     mobile.getString("cover"),

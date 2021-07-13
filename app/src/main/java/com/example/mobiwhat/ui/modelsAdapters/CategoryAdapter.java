@@ -44,8 +44,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
              @Override
              public void onClick(View v) {
                  Bundle args=new Bundle();
-                 args.putString("brand",categoryNames.get(position).toString());
-                 Navigation.findNavController(v).navigate(R.id.nav_brand_detail,args);
+                 args.putString("brand", categoryNames.get(position).toString());
+                 Navigation.findNavController(v).navigate(R.id.nav_brand_detail, args);
              }
          });
 

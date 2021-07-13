@@ -2,6 +2,7 @@ package com.example.mobiwhat.ui.modelsAdapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class MobileAdapter extends RecyclerView.Adapter<MobileAdapter.MobileHold
             @Override
             public void onClick(View v) {
                 Bundle args=new Bundle();
+                Log.d("DATAD", String.valueOf(dataSet.get(position).getId()));
                 args.putInt("id", dataSet.get(position).getId());
                 args.putString("name",dataSet.get(position).getName());
                 args.putString("desc",dataSet.get(position).getDesc());

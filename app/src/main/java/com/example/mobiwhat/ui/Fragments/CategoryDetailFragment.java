@@ -2,23 +2,20 @@ package com.example.mobiwhat.ui.Fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mobiwhat.R;
-import com.example.mobiwhat.ui.modelsAdapters.MobileAdapter;
-import com.example.mobiwhat.ui.modelsAdapters.MobileModel;
 import com.example.mobiwhat.ui.modelsAdapters.TopMobileAdapter;
 import com.example.mobiwhat.ui.modelsAdapters.TopMobileModel;
 
@@ -28,8 +25,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class CategoryDetailFragment extends Fragment {
     private static ArrayList<TopMobileModel> data;
@@ -44,23 +41,22 @@ public class CategoryDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_category_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_detail, container, false);
 
         categoryRecycle = (RecyclerView) view.findViewById(R.id.categoryRecyclerView);
-        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             categoryRecycle.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        }
-        else{
+        } else {
             categoryRecycle.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
-        data = new ArrayList<TopMobileModel>();
+        data = new ArrayList<>();
         this.getAPIMobiles();
         return view;
     }
 
-    public void getAPIMobiles(){
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+    public void getAPIMobiles() {
+        RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "https://mobiwhat.000webhostapp.com/api/all_mobiles";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -70,10 +66,12 @@ public class CategoryDetailFragment extends Fragment {
                         JSONObject mobile;
                         for (int i = 0; i < d.length(); i++) {
                             mobile = new JSONObject(d.get(i).toString());
-                            String brand=getArguments().getString("brand").toLowerCase(Locale.getDefault());
-                            if(mobile.getString("name").contains(brand))
-                            {
+                            String brand = getArguments().getString("brand");
+                            Log.d("DATAD", brand);
+                            Log.d("DATAD", mobile.getString("brand_name"));
+                            if (mobile.getString("brand_name").equalsIgnoreCase(brand)) {
                                 data.add(new TopMobileModel(
+                                        mobile.getInt("id"),
                                         mobile.getString("cover"),
                                         mobile.getString("name"),
                                         mobile.getString("description"),
@@ -87,21 +85,19 @@ public class CategoryDetailFragment extends Fragment {
                                 ));
                             }
                         }
-
-
                         adapter = new TopMobileAdapter(data);
                         categoryRecycle.setAdapter(adapter);
-                        categoryRecycle.setVisibility(View.GONE);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 },
-                error -> Log.d("ERROR","error => "+error.toString())
+                error -> Log.d("ERROR", "error => " + error.toString())
         ) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String>  params = new HashMap<>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Authorization", "Bearer YtLlDhn313P35K5Hkh0oHNIuMjXPQg0i");
                 params.put("Auth", "0&Uu^U@%pjSqd,tHof0oI3g^>uTyI~");
                 return params;

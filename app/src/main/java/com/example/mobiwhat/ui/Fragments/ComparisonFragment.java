@@ -47,8 +47,10 @@ public class ComparisonFragment extends Fragment {
 
     private void getComparisonItems() {
         String image,name,desc,price,ram,storage,battery,cm,cf,dim;
+        int id;
 
         try{
+            id = getArguments().getInt("id");
             image=getArguments().getString("image");
             name=getArguments().getString("name");
             desc=getArguments().getString("desc");
@@ -60,7 +62,7 @@ public class ComparisonFragment extends Fragment {
             cf=getArguments().getString("frontCamera");
             dim=getArguments().getString("dimension");
 
-            data.add(new TopMobileModel(image,name,desc,Integer.parseInt(price),Integer.parseInt(ram),Integer.parseInt(storage),Integer.parseInt(battery),Integer.parseInt(cm),Integer.parseInt(cf),dim));
+            data.add(new TopMobileModel(id, image,name,desc,Integer.parseInt(price),Integer.parseInt(ram),Integer.parseInt(storage),Integer.parseInt(battery),Integer.parseInt(cm),Integer.parseInt(cf),dim));
 
             adapter = new TopMobileAdapter(data);
             recyclerView.setAdapter(adapter);

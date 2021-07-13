@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mobiwhat.R;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+
+import android.content.SharedPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +44,8 @@ public class MobileDetailFragment extends Fragment {
 
     ExpandableRelativeLayout expandableLayout1, expandableLayout2, expandableLayout3;
     Button descExpandBtn,specExpandBtn,buylinkExpandBtn;
+
+    SharedPreferences sharedPref;
 
 
     @Override
@@ -64,7 +72,9 @@ public class MobileDetailFragment extends Fragment {
         dimmension=(TextView) view.findViewById(R.id.dimension);
 
         String image,name,desc,price,ram,storage,battery,cm,cf,dim;
-
+        int id;
+        id = getArguments().getInt("id");
+        Log.d("DATAD", String.valueOf(id));
         image=getArguments().getString("image");
         name=getArguments().getString("name");
         desc=getArguments().getString("desc");
@@ -75,7 +85,6 @@ public class MobileDetailFragment extends Fragment {
         cm=getArguments().getString("cameraMain");
         cf=getArguments().getString("cameraFront");
         dim=getArguments().getString("dimension");
-
 
         mobName.setText(name);
         mobDesc.setText(desc);
@@ -90,7 +99,7 @@ public class MobileDetailFragment extends Fragment {
         frontCamera.setText(cf);
         dimmension.setText(dim);
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        sharedPref = getActivity().getSharedPreferences("lists", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         descExpandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,22 +109,38 @@ public class MobileDetailFragment extends Fragment {
             }
         });
 
+        if(this.isInFavList(id)){
+            favourite.setEnabled(false);
+            favourite.setText("In Fav List");
+        }
+
         favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FavouriteFragment fav=new FavouriteFragment();
-                Bundle args=new Bundle();
-                args.putString("image",image);
-                args.putString("name",name);
-                args.putString("desc",desc);
-                args.putString("price",price);
-                args.putString("ram",ram);
-                args.putString("storage",storage);
-                args.putString("battery",battery);
-                args.putString("mainCamera",cm);
-                args.putString("frontCamera",cf);
-                args.putString("dimension",dim);
-                fav.setArguments(args);
+                String favList =  sharedPref.getString("favList", null);
+                if(favList != null && !favList.equals("") && !favList.equals("[]")){
+                    try {
+                        JSONArray myList = new JSONArray(favList);
+                        boolean isPresent = false;
+                        for(int l = 0; l < myList.length(); l++){
+                            if(myList.getInt(l) == id){
+                                isPresent = true;
+                            }
+                        }
+                        if(!isPresent) {
+                            myList.put(id);
+                        }
+                        editor.putString("favList", myList.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    editor.putString("favList", "[" + id + "]");
+                }
+                favourite.setEnabled(false);
+                favourite.setText("In Fav List");
+                editor.apply();
                 Toast.makeText(getContext(),"Added to Favourites",Toast.LENGTH_LONG).show();
             }
         });
@@ -158,4 +183,26 @@ public class MobileDetailFragment extends Fragment {
         });
         return view;
     }
+
+    public boolean isInFavList(int id){
+        String favList =  sharedPref.getString("favList", null);
+        if(favList != null && !favList.equals("") && !favList.equals("[]")) {
+            try {
+                JSONArray myList = new JSONArray(favList);
+                boolean isPresent = false;
+                for (int l = 0; l < myList.length(); l++) {
+                    if (myList.getInt(l) == id) {
+                        isPresent = true;
+                    }
+                }
+                if (isPresent) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 }

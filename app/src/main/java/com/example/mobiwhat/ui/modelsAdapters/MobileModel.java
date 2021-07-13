@@ -14,6 +14,7 @@ public class MobileModel {
     String dimensions;
 
     public MobileModel(int id,String image, String name, String desc, int price, int ram, int storage, int battery, int cameraMain, int cameraFront, String dimensions) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.desc = desc;

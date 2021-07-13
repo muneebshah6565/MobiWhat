@@ -71,6 +71,7 @@ public class TopMobilesFragment extends Fragment {
                         for (int i = 0; i < d.length(); i++) {
                             mobile = new JSONObject(d.get(i).toString());
                             data.add(new TopMobileModel(
+                                    mobile.getInt("id"),
                                     mobile.getString("cover"),
                                     mobile.getString("name"),
                                     mobile.getString("description"),

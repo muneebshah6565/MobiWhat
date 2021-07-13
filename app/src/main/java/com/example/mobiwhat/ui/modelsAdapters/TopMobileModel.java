@@ -13,7 +13,8 @@ public class TopMobileModel {
     int cameraFront;
     String dimensions;
 
-    public TopMobileModel(String image, String name, String desc, int price, int ram, int storage, int battery, int cameraMain, int cameraFront, String dimensions) {
+    public TopMobileModel(int id, String image, String name, String desc, int price, int ram, int storage, int battery, int cameraMain, int cameraFront, String dimensions) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.desc = desc;
