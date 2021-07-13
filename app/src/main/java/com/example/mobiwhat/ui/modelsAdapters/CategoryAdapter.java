@@ -1,6 +1,7 @@
 package com.example.mobiwhat.ui.modelsAdapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiwhat.R;
@@ -41,7 +43,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
              @Override
              public void onClick(View v) {
-                 Toast.makeText(v.getContext(),"click on item: "+categoryNames.get(position),Toast.LENGTH_LONG).show();
+                 Bundle args=new Bundle();
+                 args.putString("brand",categoryNames.get(position).toString());
+                 Navigation.findNavController(v).navigate(R.id.,args);
              }
          });
 

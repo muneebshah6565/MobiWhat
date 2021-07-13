@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:text="$"
+                    android:text="Rs"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_toRightOf="@id/mob_price"

@@ -2,23 +2,21 @@ package com.example.mobiwhat.ui.Fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mobiwhat.R;
-import com.example.mobiwhat.ui.modelsAdapters.BrandsModel;
 import com.example.mobiwhat.ui.modelsAdapters.MobileAdapter;
 import com.example.mobiwhat.ui.modelsAdapters.MobileModel;
 import com.example.mobiwhat.ui.modelsAdapters.TopMobileAdapter;
@@ -30,35 +28,37 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class TopMobilesFragment extends Fragment {
-
+public class CategoryDetailFragment extends Fragment {
     private static ArrayList<TopMobileModel> data;
     private static RecyclerView.Adapter adapter;
-    private RecyclerView recyclerView;
+    private RecyclerView categoryRecycle;
 
-    private ProgressBar progressBar;
+    public CategoryDetailFragment() {
+        // Required empty public constructor
+    }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_mobiles, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_category_detail, container, false);
 
-        recyclerView = (RecyclerView) root.findViewById(R.id.MobRecyclerView);
-
+        categoryRecycle = (RecyclerView) view.findViewById(R.id.categoryRecyclerView);
         if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            categoryRecycle.setLayoutManager(new GridLayoutManager(getContext(), 1));
         }
         else{
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            categoryRecycle.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
         data = new ArrayList<TopMobileModel>();
-        progressBar=(ProgressBar) root.findViewById(R.id.mobViewProgress);
-        progressBar.setVisibility(View.VISIBLE);
         this.getAPIMobiles();
-        return root;
+        return view;
     }
+
     public void getAPIMobiles(){
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = "https://mobiwhat.000webhostapp.com/api/all_mobiles";
@@ -70,22 +70,28 @@ public class TopMobilesFragment extends Fragment {
                         JSONObject mobile;
                         for (int i = 0; i < d.length(); i++) {
                             mobile = new JSONObject(d.get(i).toString());
-                            data.add(new TopMobileModel(
-                                    mobile.getString("cover"),
-                                    mobile.getString("name"),
-                                    mobile.getString("description"),
-                                    mobile.getInt("price"),
-                                    mobile.getInt("ram"),
-                                    mobile.getInt("storage"),
-                                    mobile.getInt("battery_capacity"),
-                                    mobile.getInt("camera_main"),
-                                    mobile.getInt("camera_front"),
-                                    mobile.getString("dimensions")
-                            ));
+                            String brand=getArguments().getString("brand").toLowerCase(Locale.getDefault());
+                            if(mobile.getString("name").contains(brand))
+                            {
+                                data.add(new TopMobileModel(
+                                        mobile.getString("cover"),
+                                        mobile.getString("name"),
+                                        mobile.getString("description"),
+                                        mobile.getInt("price"),
+                                        mobile.getInt("ram"),
+                                        mobile.getInt("storage"),
+                                        mobile.getInt("battery_capacity"),
+                                        mobile.getInt("camera_main"),
+                                        mobile.getInt("camera_front"),
+                                        mobile.getString("dimensions")
+                                ));
+                            }
                         }
+
+
                         adapter = new TopMobileAdapter(data);
-                        recyclerView.setAdapter(adapter);
-                        progressBar.setVisibility(View.GONE);
+                        categoryRecycle.setAdapter(adapter);
+                        categoryRecycle.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
