@@ -43,9 +43,10 @@
         android:name="com.example.mobiwhat.ui.Fragments.SearchFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_search" />
-    <fragment
-        android:id="@+id/categoryDetailFragment"
-        android:name="com.example.mobiwhat.ui.Fragments.CategoryDetailFragment"
-        android:label="CategoryDetailFragment" />
 
+    <fragment
+        android:id="@+id/nav_brand_detail"
+        android:name="com.example.mobiwhat.ui.Fragments.CategoryDetailFragment"
+        android:label="@string/mobiles"
+        tools:layout="@layout/fragment_category_detail" />
 </navigation>

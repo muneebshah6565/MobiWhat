@@ -1,22 +1,80 @@
 package com.example.mobiwhat.ui.modelsAdapters;
 
-import android.net.Uri;
-
-import java.net.URI;
-
 public class MobileModel {
+    int id;
     String image;
     String name;
     String desc;
     int price;
-    int id;
+    int ram;
+    int storage;
+    int Battery;
+    int cameraMain;
+    int cameraFront;
+    String dimensions;
 
-    public MobileModel(String image, String name, String desc, int price) {
+    public MobileModel(int id,String image, String name, String desc, int price, int ram, int storage, int battery, int cameraMain, int cameraFront, String dimensions) {
         this.image = image;
         this.name = name;
         this.desc = desc;
         this.price = price;
+        this.ram = ram;
+        this.storage = storage;
+        Battery = battery;
+        this.cameraMain = cameraMain;
+        this.cameraFront = cameraFront;
+        this.dimensions = dimensions;
     }
+
+
+    public int getRam() {
+        return ram;
+    }
+
+    public void setRam(int ram) {
+        this.ram = ram;
+    }
+
+    public int getStorage() {
+        return storage;
+    }
+
+    public void setStorage(int storage) {
+        this.storage = storage;
+    }
+
+    public int getBattery() {
+        return Battery;
+    }
+
+    public void setBattery(int battery) {
+        Battery = battery;
+    }
+
+    public int getCameraMain() {
+        return cameraMain;
+    }
+
+    public void setCameraMain(int cameraMain) {
+        this.cameraMain = cameraMain;
+    }
+
+    public int getCameraFront() {
+        return cameraFront;
+    }
+
+    public void setCameraFront(int cameraFront) {
+        this.cameraFront = cameraFront;
+    }
+
+    public String getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(String dimensions) {
+        this.dimensions = dimensions;
+    }
+
     public int getId(){return id;}
 
     public void setId(int id){

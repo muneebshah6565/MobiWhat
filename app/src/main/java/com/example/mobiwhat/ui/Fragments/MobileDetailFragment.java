@@ -63,19 +63,33 @@ public class MobileDetailFragment extends Fragment {
         frontCamera=(TextView) view.findViewById(R.id.frontCamera);
         dimmension=(TextView) view.findViewById(R.id.dimension);
 
+        String image,name,desc,price,ram,storage,battery,cm,cf,dim;
 
-        mobName.setText(getArguments().getString("name"));
-        mobDesc.setText(getArguments().getString("desc"));
-        mobPrice.setText(getArguments().getString("price"));
+        image=getArguments().getString("image");
+        name=getArguments().getString("name");
+        desc=getArguments().getString("desc");
+        price=getArguments().getString("price");
+        ram=getArguments().getString("ram");
+        storage=getArguments().getString("storage");
+        battery=getArguments().getString("battery");
+        cm=getArguments().getString("cameraMain");
+        cf=getArguments().getString("cameraFront");
+        dim=getArguments().getString("dimension");
+
+
+        mobName.setText(name);
+        mobDesc.setText(desc);
+        mobPrice.setText(price);
 
         Glide.with(getContext()).load("https://mobiwhat.000webhostapp.com/storage" + getArguments().getString("image")).into(mobImage);
 
-        mobRam.setText(getArguments().getString("ram"));
-        mobStorage.setText(getArguments().getString("storage"));
-        mobBattery.setText(getArguments().getString("battery"));
-        backCamera.setText(getArguments().getString("cameraMain"));
-        frontCamera.setText(getArguments().getString("cameraFront"));
-        dimmension.setText(getArguments().getString("dimension"));
+        mobRam.setText(ram);
+        mobStorage.setText(storage);
+        mobBattery.setText(battery);
+        backCamera.setText(cm);
+        frontCamera.setText(cf);
+        dimmension.setText(dim);
+
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         descExpandBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,22 +103,41 @@ public class MobileDetailFragment extends Fragment {
         favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Integer> favArray=new ArrayList<>();
-                favArray.add(getArguments().getInt("id"));
-                Toast.makeText(getContext(),getArguments().getInt("id"),Toast.LENGTH_LONG).show();
-                editor.putString("favList",favArray.toString());
-                editor.apply();
+                FavouriteFragment fav=new FavouriteFragment();
+                Bundle args=new Bundle();
+                args.putString("image",image);
+                args.putString("name",name);
+                args.putString("desc",desc);
+                args.putString("price",price);
+                args.putString("ram",ram);
+                args.putString("storage",storage);
+                args.putString("battery",battery);
+                args.putString("mainCamera",cm);
+                args.putString("frontCamera",cf);
+                args.putString("dimension",dim);
+                fav.setArguments(args);
+                Toast.makeText(getContext(),"Added to Favourites",Toast.LENGTH_LONG).show();
             }
         });
 
         compare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Integer> compArray=new ArrayList<>();
-                compArray.add(getArguments().getInt("id"));
-                Toast.makeText(getContext(),getArguments().getInt("id"),Toast.LENGTH_LONG).show();
-                editor.putString("compList",compArray.toString());
-                editor.apply();
+                ComparisonFragment comp=new ComparisonFragment();
+                Bundle args=new Bundle();
+                args.putString("image",image);
+                args.putString("name",name);
+                args.putString("desc",desc);
+                args.putString("price",price);
+                args.putString("ram",ram);
+                args.putString("storage",storage);
+                args.putString("battery",battery);
+                args.putString("mainCamera",cm);
+                args.putString("frontCamera",cf);
+                args.putString("dimension",dim);
+                comp.setArguments(args);
+                Toast.makeText(getContext(),"Added to Compare",Toast.LENGTH_LONG).show();
+
             }
         });
 

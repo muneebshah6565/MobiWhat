@@ -1,5 +1,7 @@
 package com.example.mobiwhat.ui.modelsAdapters;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mobiwhat.R;
 
 import java.util.ArrayList;
@@ -21,9 +24,11 @@ public class TopMobileAdapter extends RecyclerView.Adapter<TopMobileAdapter.TopM
         this.dataSet = dataSet;
     }
 
+    Context con;
     @NonNull
     @Override
     public TopMobileHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        con=parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.single_top_mobile_item, parent, false);
         TopMobileHolder holder=new TopMobileHolder(view);
@@ -42,12 +47,23 @@ public class TopMobileAdapter extends RecyclerView.Adapter<TopMobileAdapter.TopM
         mobileDesc.setText(dataSet.get(position).getDesc());
         mobilePrice.setText(String.valueOf(dataSet.get(position).getPrice()));
 
-        mobileImage.setImageResource(dataSet.get(position).getImage());
+        Glide.with(con).load("https://mobiwhat.000webhostapp.com/storage" + dataSet.get(position).getImage()).into(mobileImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.nav_mobile_detail);
+                Bundle args=new Bundle();
+                args.putString("name",dataSet.get(position).getName());
+                args.putString("desc",dataSet.get(position).getDesc());
+                args.putString("price", String.valueOf(dataSet.get(position).getPrice()));
+                args.putString("image",dataSet.get(position).getImage());
+                args.putString("ram", String.valueOf(dataSet.get(position).getRam()));
+                args.putString("storage", String.valueOf(dataSet.get(position).getStorage()));
+                args.putString("battery", String.valueOf(dataSet.get(position).getBattery()));
+                args.putString("cameraMain", String.valueOf(dataSet.get(position).getCameraMain()));
+                args.putString("cameraFront", String.valueOf(dataSet.get(position).getCameraFront()));
+                args.putString("dimension",dataSet.get(position).getDimensions());
+                Navigation.findNavController(v).navigate(R.id.nav_mobile_detail,args);
             }
         });
 
